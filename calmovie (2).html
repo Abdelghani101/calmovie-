@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaLMoviE — Outdoor Cinema</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#d4af37;--gold-lt:#f2d060;--red:#7a1414;--red-mid:#b03020;
+  --navy:#06081a;--navy-mid:#0d1130;--navy-lt:#182060;--blue-acc:#4d8ec9;
+  --white:#eef0f8;--muted:#6a7d9e;--max:920px;--r:14px;--r-lg:22px;
+  --sp-xs:8px;--sp-sm:16px;--sp-md:28px;--sp-lg:48px;--sp-xl:72px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Raleway',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;min-height:100vh}
+
+/* ── BG SCENE ── */
+.bg-scene{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(180deg,#03040e 0%,#07091e 30%,#0c0f28 55%,#13082a 75%,#1a0a0a 100%)}
+.bg-scene::before{content:'';position:absolute;inset:0;pointer-events:none;animation:twinkleA 7s ease-in-out infinite alternate;background:radial-gradient(1px 1px at 8% 9%,rgba(255,255,255,.95) 0%,transparent 100%),radial-gradient(1px 1px at 19% 5%,rgba(255,255,255,.8) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 31% 14%,rgba(255,255,255,.7) 0%,transparent 100%),radial-gradient(1px 1px at 44% 4%,rgba(255,255,255,.9) 0%,transparent 100%),radial-gradient(1px 1px at 57% 11%,rgba(255,255,255,.75) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 68% 3%,rgba(255,255,255,.85) 0%,transparent 100%),radial-gradient(1px 1px at 79% 8%,rgba(255,255,255,.65) 0%,transparent 100%),radial-gradient(1px 1px at 91% 6%,rgba(255,255,255,.9) 0%,transparent 100%),radial-gradient(1px 1px at 4% 22%,rgba(255,255,255,.7) 0%,transparent 100%),radial-gradient(1px 1px at 14% 18%,rgba(255,255,255,.55) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 25% 28%,rgba(255,255,255,.8) 0%,transparent 100%),radial-gradient(1px 1px at 36% 20%,rgba(255,255,255,.65) 0%,transparent 100%),radial-gradient(1px 1px at 48% 25%,rgba(255,255,255,.85) 0%,transparent 100%),radial-gradient(1px 1px at 62% 17%,rgba(255,255,255,.7) 0%,transparent 100%),radial-gradient(2px 2px at 82% 26%,rgba(212,175,55,.65) 0%,transparent 100%),radial-gradient(2px 2px at 50% 7%,rgba(212,175,55,.45) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 22% 12%,rgba(212,175,55,.55) 0%,transparent 100%)}
+.bg-scene::after{content:'';position:absolute;inset:0;pointer-events:none;animation:twinkleB 5s ease-in-out infinite alternate-reverse;background:radial-gradient(1px 1px at 16% 7%,rgba(255,255,255,.6) 0%,transparent 100%),radial-gradient(1px 1px at 27% 16%,rgba(255,255,255,.75) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 42% 10%,rgba(255,255,255,.85) 0%,transparent 100%),radial-gradient(1px 1px at 60% 5%,rgba(255,255,255,.7) 0%,transparent 100%),radial-gradient(1px 1px at 76% 13%,rgba(255,255,255,.65) 0%,transparent 100%),radial-gradient(1px 1px at 89% 9%,rgba(255,255,255,.8) 0%,transparent 100%),radial-gradient(1px 1px at 7% 29%,rgba(255,255,255,.55) 0%,transparent 100%),radial-gradient(1.5px 1.5px at 33% 24%,rgba(255,255,255,.7) 0%,transparent 100%),radial-gradient(2px 2px at 45% 2%,rgba(212,175,55,.5) 0%,transparent 100%)}
+@keyframes twinkleA{0%{opacity:.55}50%{opacity:1}100%{opacity:.65}}
+@keyframes twinkleB{0%{opacity:.65}50%{opacity:1}100%{opacity:.5}}
+
+.moon{position:absolute;top:5%;right:10%;width:65px;height:65px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#fef9dc,#d4af37 40%,#8a6a10 100%);box-shadow:0 0 28px rgba(212,175,55,.5),0 0 70px rgba(212,175,55,.18);animation:moonFloat 8s ease-in-out infinite alternate}
+.moon::after{content:'';position:absolute;top:12%;left:16%;width:13px;height:13px;border-radius:50%;background:rgba(0,0,0,.12);box-shadow:17px 7px 0 rgba(0,0,0,.08),7px 26px 0 rgba(0,0,0,.06)}
+@keyframes moonFloat{0%{transform:translateY(0)}100%{transform:translateY(-8px)}}
+.mountains{position:absolute;bottom:0;left:0;right:0;width:100%;height:55%}
+
+/* ── LAYOUT ── */
+.page{position:relative;z-index:1}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--sp-md)}
+
+/* ── HEADER ── */
+.site-header{text-align:center;padding:var(--sp-xl) var(--sp-md) var(--sp-lg);position:relative;z-index:2}
+.header-crown{display:flex;align-items:center;justify-content:center;gap:var(--sp-sm);margin-bottom:var(--sp-sm)}
+.crown-star{font-size:1.3rem;filter:drop-shadow(0 0 8px var(--gold));animation:spinGlow 7s linear infinite}
+@keyframes spinGlow{0%{transform:rotate(0deg);filter:drop-shadow(0 0 5px var(--gold))}50%{filter:drop-shadow(0 0 18px var(--gold-lt))}100%{transform:rotate(360deg);filter:drop-shadow(0 0 5px var(--gold))}}
+.site-name{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,5.5vw,2.8rem);color:var(--gold);letter-spacing:6px;line-height:1;text-shadow:0 0 25px rgba(212,175,55,.9),0 0 70px rgba(212,175,55,.35),0 3px 6px rgba(0,0,0,.8);animation:headGlow 4s ease-in-out infinite}
+@keyframes headGlow{0%,100%{text-shadow:0 0 25px rgba(212,175,55,.9),0 0 70px rgba(212,175,55,.35),0 3px 6px #000}50%{text-shadow:0 0 45px rgba(212,175,55,1),0 0 100px rgba(212,175,55,.55),0 3px 6px #000}}
+.site-tagline{font-family:'Cinzel',serif;font-size:clamp(.6rem,2vw,.85rem);letter-spacing:7px;color:var(--blue-acc);text-transform:uppercase;margin-top:var(--sp-xs);opacity:.85}
+.header-rule{width:240px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:var(--sp-md) auto 0}
+
+/* admin btn */
+.admin-btn{position:fixed;top:16px;right:16px;z-index:500;background:linear-gradient(135deg,rgba(212,175,55,.2),rgba(212,175,55,.08));border:1px solid rgba(212,175,55,.45);border-radius:30px;color:var(--gold);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:2px;padding:9px 18px;cursor:pointer;backdrop-filter:blur(10px);transition:all .3s;white-space:nowrap;display:flex;align-items:center;gap:7px}
+.admin-btn:hover{background:linear-gradient(135deg,rgba(212,175,55,.35),rgba(212,175,55,.15));box-shadow:0 4px 20px rgba(212,175,55,.3)}
+
+/* ── SECTIONS ── */
+.sec-head{text-align:center;margin-bottom:var(--sp-md)}
+.sec-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.1rem,3.5vw,1.6rem);color:var(--gold);letter-spacing:3px;text-shadow:0 0 18px rgba(212,175,55,.3)}
+.sec-sub{display:block;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-top:var(--sp-xs)}
+.divider-ornament{display:flex;align-items:center;gap:10px;margin:var(--sp-lg) auto;max-width:320px}
+.divider-ornament span{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.3),transparent)}
+.divider-ornament i{color:var(--gold);font-style:normal;font-size:.9rem;opacity:.65}
+.section{padding:0 0 var(--sp-lg)}
+
+/* ── DAY SELECTOR ── */
+.day-selector{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-sm);margin-bottom:var(--sp-md)}
+.day-card{background:linear-gradient(145deg,rgba(13,17,48,.85),rgba(6,8,26,.95));border:2px solid rgba(212,175,55,.18);border-radius:var(--r-lg);padding:var(--sp-md) var(--sp-sm);text-align:center;cursor:pointer;transition:all .35s;position:relative;overflow:hidden}
+.day-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,175,55,.08),transparent 70%);opacity:0;transition:opacity .35s}
+.day-card:hover::before,.day-card.active::before{opacity:1}
+.day-card.active{border-color:var(--gold);box-shadow:0 0 24px rgba(212,175,55,.22),0 8px 30px rgba(0,0,0,.4)}
+.day-name{font-family:'Cinzel Decorative',serif;font-size:clamp(.95rem,3vw,1.3rem);color:var(--gold);letter-spacing:3px;margin-bottom:var(--sp-xs)}
+.day-date-lbl{font-size:.68rem;letter-spacing:3px;color:var(--blue-acc);text-transform:uppercase;margin-bottom:var(--sp-sm)}
+.day-movie-title{font-family:'Cinzel',serif;font-size:.88rem;color:var(--white);margin-bottom:var(--sp-xs)}
+.day-seats-lbl{font-size:.72rem;color:var(--muted)}
+.day-seats-lbl span{color:var(--gold);font-weight:700}
+.day-badge{position:absolute;top:10px;right:10px;background:var(--red-mid);color:#fff;font-size:.52rem;letter-spacing:2px;padding:3px 8px;border-radius:10px;text-transform:uppercase}
+.day-selected-indicator{width:6px;height:6px;border-radius:50%;background:var(--gold);margin:var(--sp-xs) auto 0;opacity:0;transition:opacity .3s}
+.day-card.active .day-selected-indicator{opacity:1}
+
+/* ── MOVIE CARD ── */
+.movie-card{display:flex;flex-wrap:wrap;gap:var(--sp-lg);align-items:center;justify-content:center;background:linear-gradient(145deg,rgba(155,28,28,.13) 0%,rgba(13,17,48,.88) 100%);border:1px solid rgba(212,175,55,.2);border-radius:var(--r-lg);padding:var(--sp-lg);position:relative;overflow:hidden;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.movie-card::before{content:'';position:absolute;top:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(155,28,28,.2),transparent 70%);pointer-events:none}
+.poster-shell{position:relative;flex-shrink:0;align-self:flex-start}
+.poster-badge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--red-mid),var(--red));color:#fff;font-family:'Cinzel',serif;font-size:.54rem;letter-spacing:2.5px;padding:5px 14px;border-radius:20px;white-space:nowrap;box-shadow:0 4px 16px rgba(176,48,32,.55);text-transform:uppercase}
+.movie-poster{width:160px;height:240px;object-fit:cover;border-radius:12px;border:2px solid rgba(212,175,55,.32);box-shadow:0 0 28px rgba(212,175,55,.16),0 16px 48px rgba(0,0,0,.7);display:block;transition:transform .45s,box-shadow .45s}
+.movie-poster:hover{transform:scale(1.05) rotate(-1.5deg);box-shadow:0 0 50px rgba(212,175,55,.32),0 16px 48px rgba(0,0,0,.85)}
+.movie-info{flex:1;min-width:200px}
+.now-label{font-size:.62rem;letter-spacing:4px;color:var(--blue-acc);text-transform:uppercase;margin-bottom:var(--sp-sm);display:block}
+.movie-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.2rem,3.5vw,1.9rem);color:var(--gold);line-height:1.25;margin-bottom:var(--sp-md);text-shadow:0 0 16px rgba(212,175,55,.3)}
+.meta-list{display:flex;flex-direction:column;gap:var(--sp-sm)}
+.meta-item{display:flex;align-items:center;gap:var(--sp-sm)}
+.meta-dot{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,rgba(212,175,55,.13),rgba(212,175,55,.03));border:1px solid rgba(212,175,55,.25);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0}
+.meta-text .lbl{display:block;font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted)}
+.meta-text .val{font-size:.86rem;color:var(--white);font-weight:500}
+
+
+/* ── SNACKS ── */
+.snack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:var(--sp-sm)}
+.snack-card{background:linear-gradient(160deg,rgba(24,32,96,.52),rgba(6,8,26,.82));border:1px solid rgba(212,175,55,.1);border-radius:var(--r);padding:var(--sp-md) var(--sp-sm) var(--sp-sm);text-align:center;transition:transform .3s,border-color .3s,box-shadow .3s;cursor:default}
+.snack-card:hover{transform:translateY(-6px);border-color:rgba(212,175,55,.35);box-shadow:0 10px 26px rgba(212,175,55,.09)}
+.snack-emoji{font-size:1.85rem;display:block;margin-bottom:var(--sp-xs)}
+.snack-name{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:1px;color:var(--white);margin-bottom:var(--sp-xs)}
+.snack-price{font-size:.98rem;color:var(--gold);font-weight:700}
+
+/* ── SEAT TYPE CARDS ── */
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-sm)}
+.price-card{background:linear-gradient(160deg,rgba(122,20,20,.16),rgba(6,8,26,.85));border:2px solid rgba(212,175,55,.16);border-radius:var(--r-lg);padding:var(--sp-lg) var(--sp-md) var(--sp-md);text-align:center;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;cursor:pointer}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(212,175,55,.14);border-color:rgba(212,175,55,.35)}
+.price-card.selected{border-color:var(--gold);box-shadow:0 0 20px rgba(212,175,55,.25);background:linear-gradient(160deg,rgba(122,20,20,.26),rgba(13,17,48,.9))}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.seat-svg{display:block;margin:0 auto var(--sp-sm);width:68px;height:68px}
+.price-type{font-family:'Cinzel',serif;font-size:.86rem;color:var(--gold);letter-spacing:2px;margin-bottom:var(--sp-xs)}
+.price-amt{font-size:2.1rem;font-weight:700;color:#fff;line-height:1}
+.price-amt sup{font-size:.76rem;vertical-align:super;color:var(--muted);margin-left:3px}
+.price-desc{font-size:.7rem;color:var(--muted);margin-top:var(--sp-xs)}
+.selected-check{position:absolute;top:10px;right:12px;color:var(--gold);font-size:1rem;opacity:0;transition:opacity .3s}
+.price-card.selected .selected-check{opacity:1}
+
+/* ── BOOKING FORM ── */
+.booking-box{background:linear-gradient(160deg,rgba(6,8,26,.94) 0%,rgba(24,32,96,.32) 100%);border:1px solid rgba(212,175,55,.16);border-radius:var(--r-lg);padding:var(--sp-lg);position:relative;overflow:hidden}
+.booking-box::after{content:'';position:absolute;bottom:-50px;right:-50px;width:240px;height:240px;background:radial-gradient(circle,rgba(122,20,20,.12),transparent 70%);pointer-events:none}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-md)}
+.form-full{grid-column:1/-1}
+.form-group{display:flex;flex-direction:column;gap:var(--sp-xs)}
+.form-label{font-size:.62rem;letter-spacing:3px;text-transform:uppercase;color:var(--blue-acc);font-weight:700}
+.form-input,.form-select{background:rgba(6,8,26,.88);border:1px solid rgba(212,175,55,.18);border-radius:10px;color:var(--white);font-family:'Raleway',sans-serif;font-size:.9rem;padding:14px 16px;outline:none;transition:border-color .3s,box-shadow .3s;width:100%;-webkit-appearance:none;appearance:none}
+.form-input::placeholder{color:var(--muted)}
+.form-input:focus,.form-select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.09)}
+.form-select option{background:#0d1130;color:var(--white)}
+.total-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,rgba(212,175,55,.08),rgba(6,8,26,.5));border:1px solid rgba(212,175,55,.26);border-radius:12px;padding:var(--sp-sm) var(--sp-md)}
+.total-lbl{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.total-amt{font-family:'Cinzel',serif;font-size:1.75rem;color:var(--gold);font-weight:700;text-shadow:0 0 12px rgba(212,175,55,.45);transition:all .3s}
+.btn-book{width:100%;padding:16px;margin-top:var(--sp-md);background:linear-gradient(135deg,var(--red-mid),var(--red));border:none;border-radius:12px;color:#fff;font-family:'Cinzel',serif;font-size:.88rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden;transition:transform .2s,box-shadow .3s;box-shadow:0 4px 18px rgba(176,48,32,.28)}
+.btn-book::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.1),transparent);transition:left .5s}
+.btn-book:hover::after{left:100%}
+.btn-book:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(176,48,32,.5)}
+
+/* ── FOOTER ── */
+.site-footer{position:relative;z-index:1;text-align:center;padding:var(--sp-md) var(--sp-md) var(--sp-xl);font-size:.65rem;letter-spacing:2.5px;color:var(--muted);opacity:.4}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--navy)}
+::-webkit-scrollbar-thumb{background:rgba(212,175,55,.25);border-radius:3px}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.vis{opacity:1;transform:none}
+
+/* ── MODAL BASE ── */
+.modal{position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:var(--sp-sm)}
+.modal.open{display:flex}
+.modal-inner{display:flex;flex-direction:column;align-items:center;gap:var(--sp-sm);max-height:96vh;overflow-y:auto;width:100%;max-width:600px;-webkit-overflow-scrolling:touch;padding:4px}
+.modal-actions{display:flex;gap:var(--sp-sm);flex-wrap:wrap;justify-content:center;width:100%}
+.btn-dl{padding:13px 28px;background:linear-gradient(135deg,var(--gold),#b8960a);border:none;border-radius:10px;color:#0a0e2a;font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:2px;cursor:pointer;font-weight:700;transition:transform .2s,box-shadow .3s}
+.btn-dl:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(212,175,55,.38)}
+.btn-cls{padding:13px 28px;background:transparent;border:1px solid rgba(255,255,255,.16);border-radius:10px;color:var(--muted);font-family:'Raleway',sans-serif;font-size:.8rem;letter-spacing:2px;cursor:pointer;transition:border-color .3s,color .3s}
+.btn-cls:hover{border-color:rgba(255,255,255,.45);color:#fff}
+
+/* ── TICKET ── */
+#ticket{width:100%;background:linear-gradient(160deg,#0c0f2d 0%,#1c0909 48%,#09102a 100%);border:2px solid rgba(212,175,55,.42);border-radius:22px;overflow:hidden;position:relative;font-family:'Raleway',sans-serif;box-shadow:0 0 55px rgba(212,175,55,.16),0 22px 65px rgba(0,0,0,.85)}
+.tk-header{background:linear-gradient(135deg,#8b1a1a 0%,#1a2560 100%);padding:var(--sp-md) var(--sp-md) calc(var(--sp-md)+8px);text-align:center;position:relative}
+.tk-header::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:22px;background:#0c0f2d;clip-path:ellipse(108% 100% at 50% 0%)}
+.tk-brand{font-family:'Cinzel Decorative',serif;font-size:1.4rem;color:var(--gold);letter-spacing:5px;text-shadow:0 0 18px rgba(212,175,55,.85)}
+.tk-sub{font-size:.58rem;letter-spacing:5px;color:rgba(255,255,255,.5);text-transform:uppercase;margin-top:4px;display:block}
+/* Unique code banner */
+.tk-code-banner{background:rgba(212,175,55,.1);border-bottom:1px dashed rgba(212,175,55,.2);padding:8px var(--sp-md);display:flex;align-items:center;justify-content:space-between}
+.tk-code-label{font-size:.56rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.tk-code-val{font-family:'Courier New',monospace;font-size:1.05rem;color:var(--gold);font-weight:700;letter-spacing:3px;text-shadow:0 0 10px rgba(212,175,55,.5)}
+.tk-body{padding:var(--sp-md) var(--sp-md) var(--sp-sm);display:flex;gap:var(--sp-md);align-items:flex-start}
+.tk-details{flex:1;min-width:0}
+.tk-movie{font-family:'Cinzel Decorative',serif;font-size:clamp(.9rem,3.5vw,1.15rem);color:var(--gold);margin-bottom:var(--sp-md);line-height:1.3}
+.tk-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.tk-row:last-child{border-bottom:none}
+.tk-l{font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);flex-shrink:0;padding-top:2px}
+.tk-v{font-size:.82rem;color:#fff;text-align:right;font-weight:500;word-break:break-word}
+.tk-v.gold{color:var(--gold);font-size:1rem;font-weight:700}
+.tk-qr-wrap{display:flex;flex-direction:column;align-items:center;gap:var(--sp-xs);flex-shrink:0}
+#qr-canvas{border-radius:8px;display:block}
+.tk-scan-lbl{font-size:.52rem;letter-spacing:2px;color:var(--muted);text-transform:uppercase;text-align:center}
+.tk-perf{display:flex;align-items:center;padding:0 var(--sp-sm);margin:2px 0}
+.tk-notch{width:18px;height:18px;border-radius:50%;background:var(--navy);border:1px solid rgba(212,175,55,.15);flex-shrink:0}
+.tk-dots{flex:1;height:1px;margin:0 4px;background:repeating-linear-gradient(90deg,rgba(212,175,55,.28) 0,rgba(212,175,55,.28) 6px,transparent 6px,transparent 12px)}
+.tk-footer{padding:var(--sp-sm) var(--sp-md) var(--sp-md);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tk-id{font-family:'Courier New',monospace;font-size:.6rem;color:var(--muted)}
+.tk-id strong{display:block;font-size:.62rem;color:rgba(212,175,55,.55);margin-bottom:2px}
+.tk-film-ico{font-size:1.6rem;opacity:.65}
+
+/* ── ADMIN PANEL ── */
+#admin-modal{z-index:1000}
+.admin-panel{background:linear-gradient(160deg,#0c0f2a 0%,#180808 100%);border:1px solid rgba(212,175,55,.28);border-radius:var(--r-lg);width:100%;overflow:hidden;box-shadow:0 0 60px rgba(212,175,55,.12),0 20px 60px rgba(0,0,0,.85)}
+.admin-header{background:linear-gradient(135deg,rgba(212,175,55,.18),rgba(212,175,55,.06));padding:var(--sp-md) var(--sp-lg);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(212,175,55,.14)}
+.admin-title{font-family:'Cinzel Decorative',serif;font-size:1rem;color:var(--gold);letter-spacing:3px}
+.admin-close{background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:8px;color:var(--muted);font-size:.88rem;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.admin-close:hover{border-color:rgba(255,255,255,.4);color:#fff}
+.admin-body{padding:var(--sp-md) var(--sp-lg);max-height:76vh;overflow-y:auto}
+.admin-section{margin-bottom:var(--sp-md)}
+.admin-section-title{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);opacity:.8;margin-bottom:var(--sp-sm);padding-bottom:6px;border-bottom:1px solid rgba(212,175,55,.1)}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-sm)}
+.admin-grid.col1{grid-template-columns:1fr}
+.admin-grid.col3{grid-template-columns:1fr 1fr 1fr}
+.admin-group{display:flex;flex-direction:column;gap:6px}
+.admin-label{font-size:.58rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue-acc);font-weight:700}
+.admin-input{background:rgba(6,8,26,.9);border:1px solid rgba(212,175,55,.2);border-radius:8px;color:var(--white);font-family:'Raleway',sans-serif;font-size:.86rem;padding:10px 13px;outline:none;transition:border-color .3s,box-shadow .3s;width:100%}
+.admin-input:focus{border-color:var(--gold);box-shadow:0 0 0 2px rgba(212,175,55,.1)}
+.admin-input::placeholder{color:var(--muted)}
+.admin-toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+.admin-toggle-label{font-size:.8rem;color:var(--white)}
+.toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:rgba(255,255,255,.1);border-radius:12px;cursor:pointer;transition:.3s;border:1px solid rgba(255,255,255,.14)}
+.toggle-slider::before{content:'';position:absolute;width:18px;height:18px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.3s}
+.toggle-switch input:checked+.toggle-slider{background:var(--gold);border-color:var(--gold)}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(20px);background:#0a0e2a}
+.btn-apply{width:100%;padding:13px;background:linear-gradient(135deg,var(--red-mid),var(--red));border:none;border-radius:10px;color:#fff;font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:var(--sp-xs);transition:transform .2s,box-shadow .3s;box-shadow:0 4px 16px rgba(176,48,32,.25)}
+.btn-apply:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(176,48,32,.45)}
+.admin-note{font-size:.68rem;color:var(--muted);margin-top:4px;font-style:italic}
+
+/* snack rows in admin */
+.snack-row{display:grid;grid-template-columns:2fr 2fr 1fr;gap:8px;align-items:center;margin-bottom:8px}
+.snack-row-header{display:grid;grid-template-columns:2fr 2fr 1fr;gap:8px;margin-bottom:4px}
+.snack-row-header span{font-size:.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.btn-remove-snack{background:rgba(176,48,32,.2);border:1px solid rgba(176,48,32,.3);border-radius:6px;color:var(--red-mid);font-size:.8rem;cursor:pointer;padding:8px;transition:all .2s;width:100%}
+.btn-remove-snack:hover{background:rgba(176,48,32,.4);color:#fff}
+.btn-add-snack{width:100%;padding:10px;background:rgba(77,142,201,.1);border:1px dashed rgba(77,142,201,.3);border-radius:8px;color:var(--blue-acc);font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:2px;cursor:pointer;margin-top:var(--sp-xs);transition:all .3s}
+.btn-add-snack:hover{background:rgba(77,142,201,.2);border-color:var(--blue-acc)}
+
+/* ── SCANNER ── */
+#scanner-modal{z-index:1000}
+.scanner-panel{background:linear-gradient(160deg,#0c0f2a,#18080a);border:1px solid rgba(212,175,55,.28);border-radius:var(--r-lg);width:100%;max-width:480px;overflow:hidden}
+.scanner-header{background:linear-gradient(135deg,rgba(212,175,55,.15),rgba(212,175,55,.05));padding:var(--sp-sm) var(--sp-md);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(212,175,55,.12)}
+.scanner-title{font-family:'Cinzel',serif;font-size:.88rem;color:var(--gold);letter-spacing:3px}
+.scanner-body{padding:var(--sp-md)}
+.scanner-video-wrap{position:relative;width:100%;padding-bottom:100%;border-radius:12px;overflow:hidden;background:#000;border:1px solid rgba(212,175,55,.2)}
+.scanner-video-wrap video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scanner-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.scanner-frame{width:65%;height:65%;border:2px solid var(--gold);border-radius:8px;box-shadow:0 0 0 9999px rgba(0,0,0,.5);position:relative}
+.scan-line{position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);top:0;animation:scanMove 2s linear infinite}
+@keyframes scanMove{0%{top:0}50%{top:calc(100% - 2px)}100%{top:0}}
+.scanner-status{text-align:center;margin-top:var(--sp-sm);font-size:.78rem;color:var(--muted);font-family:'Cinzel',serif;letter-spacing:2px}
+.scanner-result{margin-top:var(--sp-sm);background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:var(--sp-sm) var(--sp-md);display:none}
+.scanner-result.show{display:block}
+.scanner-result-title{font-size:.63rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+.scanner-result-data{font-size:.8rem;color:var(--white);word-break:break-all;line-height:1.7;white-space:pre-line}
+.scanner-btns{display:flex;gap:var(--sp-sm);margin-top:var(--sp-sm)}
+.btn-scan-start{flex:1;padding:11px;background:linear-gradient(135deg,var(--gold),#b8960a);border:none;border-radius:10px;color:#0a0e2a;font-family:'Cinzel',serif;font-size:.76rem;letter-spacing:2px;cursor:pointer;font-weight:700;transition:transform .2s}
+.btn-scan-start:hover{transform:translateY(-2px)}
+.btn-scan-stop{flex:1;padding:11px;background:transparent;border:1px solid rgba(255,255,255,.14);border-radius:10px;color:var(--muted);font-family:'Raleway',sans-serif;font-size:.76rem;letter-spacing:2px;cursor:pointer;transition:all .3s}
+.btn-scan-stop:hover{border-color:rgba(255,255,255,.4);color:#fff}
+
+/* ── RESPONSIVE ── */
+@media(max-width:700px){
+  :root{--sp-lg:34px;--sp-xl:50px}
+  .day-selector{grid-template-columns:1fr 1fr}
+  .movie-card{padding:var(--sp-md);gap:var(--sp-md)}
+  .booking-box{padding:var(--sp-md)}
+  .admin-body{padding:var(--sp-sm) var(--sp-md)}
+  .admin-header{padding:var(--sp-sm) var(--sp-md)}
+  .form-grid,.admin-grid,.admin-grid.col3{grid-template-columns:1fr}
+  .form-full{grid-column:1}
+  .tk-body{flex-direction:column;align-items:center}
+  .tk-qr-wrap{flex-direction:row;gap:var(--sp-sm);align-items:center}
+  .price-grid{grid-template-columns:1fr 1fr}
+  .snack-row{grid-template-columns:1fr 1fr 40px}
+}
+@media(max-width:480px){
+  .wrap{padding:0 var(--sp-sm)}
+  .site-name{letter-spacing:3px}
+  .movie-poster{width:135px;height:202px}
+  .snack-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .price-grid{grid-template-columns:1fr 1fr}
+  .modal-actions,.scanner-btns{flex-direction:column}
+  .btn-dl,.btn-cls,.btn-scan-start,.btn-scan-stop{width:100%;text-align:center}
+  .admin-btn{font-size:.6rem;padding:7px 11px}
+  .day-name{font-size:.85rem;letter-spacing:2px}
+}
+</style>
+</head>
+<body>
+
+<!-- BG -->
+<div class="bg-scene">
+  <div class="moon"></div>
+  <svg class="mountains" viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="mf" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1035"/><stop offset="100%" stop-color="#0d0820"/></linearGradient>
+      <linearGradient id="mm" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#120c25"/><stop offset="100%" stop-color="#08050f"/></linearGradient>
+      <linearGradient id="mn" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a0808"/><stop offset="100%" stop-color="#080306"/></linearGradient>
+      <linearGradient id="mfg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#100408"/><stop offset="100%" stop-color="#050202"/></linearGradient>
+      <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(220,215,240,.55)"/><stop offset="100%" stop-color="rgba(180,170,210,0)"/></linearGradient>
+    </defs>
+    <path d="M0,420 L60,320 L130,370 L200,260 L290,330 L370,200 L460,290 L530,230 L620,310 L700,180 L790,270 L870,210 L950,300 L1030,190 L1120,270 L1200,160 L1290,250 L1360,200 L1440,280 L1440,500 L0,500 Z" fill="url(#mf)" opacity=".65"/>
+    <path d="M200,260 L220,290 L230,275 L245,295 L200,260 Z" fill="url(#snow)"/>
+    <path d="M370,200 L395,238 L410,218 L425,242 L370,200 Z" fill="url(#snow)"/>
+    <path d="M700,180 L728,222 L742,200 L758,228 L700,180 Z" fill="url(#snow)"/>
+    <path d="M1200,160 L1228,205 L1242,183 L1258,210 L1200,160 Z" fill="url(#snow)"/>
+    <path d="M0,460 L80,370 L160,410 L240,310 L340,380 L420,280 L520,360 L600,290 L680,340 L760,250 L850,330 L940,260 L1040,340 L1130,270 L1220,350 L1310,280 L1390,330 L1440,300 L1440,500 L0,500 Z" fill="url(#mm)" opacity=".8"/>
+    <path d="M240,310 L262,345 L275,325 L288,348 L240,310 Z" fill="url(#snow)" opacity=".7"/>
+    <path d="M420,280 L446,318 L460,298 L474,322 L420,280 Z" fill="url(#snow)" opacity=".7"/>
+    <path d="M760,250 L788,292 L803,270 L818,296 L760,250 Z" fill="url(#snow)" opacity=".7"/>
+    <path d="M0,490 L100,400 L190,440 L280,360 L380,415 L470,330 L570,395 L660,325 L760,385 L860,310 L960,375 L1060,300 L1160,370 L1260,305 L1360,365 L1440,340 L1440,500 L0,500 Z" fill="url(#mn)"/>
+    <path d="M280,360 L300,390 L312,374 L324,393 L280,360 Z" fill="url(#snow)" opacity=".5"/>
+    <path d="M470,330 L492,364 L505,346 L518,368 L470,330 Z" fill="url(#snow)" opacity=".5"/>
+    <path d="M0,500 L0,455 L80,430 L170,460 L260,420 L360,448 L460,415 L560,445 L660,410 L760,440 L860,408 L960,438 L1060,412 L1160,442 L1260,418 L1360,445 L1440,425 L1440,500 Z" fill="url(#mfg)"/>
+    <g fill="#050202" opacity=".9">
+      <polygon points="40,455 50,430 60,455"/><polygon points="55,458 67,428 79,458"/><polygon points="72,456 83,432 94,456"/>
+      <polygon points="300,448 312,420 324,448"/><polygon points="318,450 330,424 342,450"/><polygon points="336,447 348,423 360,447"/>
+      <polygon points="640,445 653,415 666,445"/><polygon points="660,447 673,419 686,447"/>
+      <polygon points="940,440 953,412 966,440"/><polygon points="958,442 971,416 984,442"/><polygon points="976,440 988,416 1000,440"/>
+      <polygon points="1250,445 1262,418 1274,445"/><polygon points="1268,447 1280,421 1292,447"/><polygon points="1286,444 1298,420 1310,444"/>
+      <polygon points="1380,450 1392,422 1404,450"/><polygon points="1398,452 1410,426 1422,452"/>
+    </g>
+    <ellipse cx="720" cy="480" rx="280" ry="30" fill="rgba(155,28,28,.18)" opacity=".6"/>
+    <ellipse cx="720" cy="490" rx="180" ry="16" fill="rgba(212,175,55,.08)" opacity=".5"/>
+  </svg>
+</div>
+
+<button class="admin-btn" onclick="openAdmin()">⚙️ Admin Panel</button>
+
+<div class="page">
+<header class="site-header">
+  <div class="header-crown">
+    <span class="crown-star">✦</span>
+    <h1 class="site-name" id="site-name">CaLMoviE</h1>
+    <span class="crown-star">✦</span>
+  </div>
+  <p class="site-tagline" id="site-tagline">Outdoor Cinema Experience</p>
+  <div class="header-rule"></div>
+</header>
+
+<main class="wrap">
+
+  <!-- DAY SELECTOR -->
+  <section class="section reveal">
+    <div class="sec-head">
+      <h2 class="sec-title">🗓️ Choose Your Night</h2>
+      <span class="sec-sub">Two screenings — pick your evening</span>
+    </div>
+    <div class="day-selector">
+      <div class="day-card active" id="day-card-0" onclick="selectDay(0)">
+        <span class="day-badge">🔴 Live</span>
+        <div class="day-name" id="day-name-0">Monday</div>
+        <div class="day-date-lbl" id="day-date-0">April 7 · 2026</div>
+        <div class="day-movie-title" id="day-movie-0">Interstellar</div>
+        <div class="day-seats-lbl">Seats: <span id="day-seats-0">60</span></div>
+        <div class="day-selected-indicator"></div>
+      </div>
+      <div class="day-card" id="day-card-1" onclick="selectDay(1)">
+        <span class="day-badge" style="background:var(--navy-lt)">📅</span>
+        <div class="day-name" id="day-name-1">Tuesday</div>
+        <div class="day-date-lbl" id="day-date-1">April 8 · 2026</div>
+        <div class="day-movie-title" id="day-movie-1">Dune: Part Two</div>
+        <div class="day-seats-lbl">Seats: <span id="day-seats-1">60</span></div>
+        <div class="day-selected-indicator"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider-ornament reveal"><span></span><i>✦</i><span></span></div>
+
+  <!-- MOVIE CARD (dynamic) -->
+  <section class="section reveal">
+    <div class="sec-head">
+      <h2 class="sec-title">🎬 Tonight's Screening</h2>
+      <span class="sec-sub" id="screening-day-label">Monday · April 7</span>
+    </div>
+    <div class="movie-card">
+      <div class="poster-shell">
+        <span class="poster-badge" id="movie-badge">🔴 Monday</span>
+        <img class="movie-poster" id="movie-poster"
+          src="https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg"
+          alt="Movie Poster"
+          onerror="this.src='https://placehold.co/160x240/1a2560/d4af37?text=🎬'">
+      </div>
+      <div class="movie-info">
+        <span class="now-label">Now Showing</span>
+        <h2 class="movie-title" id="movie-name-display">Interstellar</h2>
+        <ul class="meta-list">
+          <li class="meta-item"><div class="meta-dot">📅</div><div class="meta-text"><span class="lbl">Date</span><span class="val" id="meta-date">Monday, April 7 · 2026</span></div></li>
+          <li class="meta-item"><div class="meta-dot">⏰</div><div class="meta-text"><span class="lbl">Showtime</span><span class="val" id="meta-time">21:00</span></div></li>
+          <li class="meta-item"><div class="meta-dot">📍</div><div class="meta-text"><span class="lbl">Venue</span><span class="val" id="meta-venue">Open Sky · Outdoor Stage</span></div></li>
+        </ul>
+      </div>
+    </div>
+    </section>
+
+  <div class="divider-ornament reveal"><span></span><i>✦</i><span></span></div>
+
+  <!-- SNACK MENU -->
+  <section class="section reveal">
+    <div class="sec-head">
+      <h2 class="sec-title">🍿 Snack Menu</h2>
+      <span class="sec-sub">Available at the counter · Display only</span>
+    </div>
+    <div class="snack-grid" id="snack-grid"></div>
+  </section>
+
+  <div class="divider-ornament reveal"><span></span><i>✦</i><span></span></div>
+
+  <!-- SEAT TYPES -->
+  <section class="section reveal">
+    <div class="sec-head">
+      <h2 class="sec-title">🎟️ Choose Your Seat</h2>
+      <span class="sec-sub">Click to select your comfort level</span>
+    </div>
+    <div class="price-grid">
+
+      <!-- BEAN BAG / POUF -->
+      <div class="price-card" id="card-Pouf" onclick="selectSeatType('Pouf')">
+        <span class="selected-check">✦</span>
+        <!-- Bean bag SVG -->
+        <svg class="seat-svg" viewBox="0 0 68 68" xmlns="http://www.w3.org/2000/svg">
+          <!-- bean bag body -->
+          <ellipse cx="34" cy="30" rx="26" ry="20" fill="#6b3a1f" opacity=".9"/>
+          <ellipse cx="34" cy="30" rx="22" ry="16" fill="#8b5a2b"/>
+          <!-- cushion highlight -->
+          <ellipse cx="28" cy="22" rx="9" ry="6" fill="rgba(255,255,255,.12)" transform="rotate(-15 28 22)"/>
+          <!-- seam lines -->
+          <path d="M12,30 Q34,18 56,30" stroke="rgba(0,0,0,.25)" stroke-width="1.5" fill="none"/>
+          <path d="M14,36 Q34,24 54,36" stroke="rgba(0,0,0,.2)" stroke-width="1" fill="none"/>
+          <!-- base / flat bottom -->
+          <ellipse cx="34" cy="47" rx="20" ry="6" fill="#4a2510" opacity=".85"/>
+          <ellipse cx="34" cy="46" rx="18" ry="4.5" fill="#5c3018"/>
+          <!-- person silhouette hint -->
+          <ellipse cx="34" cy="25" rx="7" ry="5" fill="rgba(255,220,150,.08)"/>
+          <!-- gold rim -->
+          <ellipse cx="34" cy="30" rx="26" ry="20" fill="none" stroke="rgba(212,175,55,.3)" stroke-width="1.2"/>
+          <!-- little star -->
+          <circle cx="34" cy="56" r="2.5" fill="#d4af37" opacity=".5"/>
+        </svg>
+        <div class="price-type">Pouf</div>
+        <div class="price-amt" id="display-price-Pouf">1000<sup>DA</sup></div>
+        <div class="price-desc">Cozy bean bag on the grass</div>
+      </div>
+
+      <!-- PALETTE / STANDARD CHAIR -->
+      <div class="price-card" id="card-Standard" onclick="selectSeatType('Standard')">
+        <span class="selected-check">✦</span>
+        <!-- Palette chair SVG -->
+        <svg class="seat-svg" viewBox="0 0 68 68" xmlns="http://www.w3.org/2000/svg">
+          <!-- pallet base boards -->
+          <rect x="8" y="50" width="52" height="6" rx="2" fill="#7a5c30"/>
+          <rect x="12" y="52" width="8" height="10" rx="1" fill="#5c4020"/>
+          <rect x="30" y="52" width="8" height="10" rx="1" fill="#5c4020"/>
+          <rect x="48" y="52" width="8" height="10" rx="1" fill="#5c4020"/>
+          <!-- seat cushion -->
+          <rect x="10" y="36" width="48" height="16" rx="6" fill="#9b6b3a"/>
+          <rect x="12" y="38" width="44" height="10" rx="5" fill="#b8844a"/>
+          <!-- cushion highlight -->
+          <ellipse cx="28" cy="41" rx="10" ry="4" fill="rgba(255,255,255,.1)" transform="rotate(-8 28 41)"/>
+          <!-- seat cushion seam -->
+          <line x1="34" y1="38" x2="34" y2="50" stroke="rgba(0,0,0,.15)" stroke-width="1"/>
+          <!-- back rest -->
+          <rect x="14" y="8" width="40" height="30" rx="6" fill="#9b6b3a"/>
+          <rect x="16" y="10" width="36" height="26" rx="5" fill="#c49660"/>
+          <!-- back cushion highlight -->
+          <ellipse cx="26" cy="16" rx="8" ry="5" fill="rgba(255,255,255,.12)" transform="rotate(-10 26 16)"/>
+          <!-- back rest pillows hint -->
+          <rect x="17" y="11" width="15" height="23" rx="4" fill="rgba(255,255,255,.06)"/>
+          <rect x="35" y="11" width="15" height="23" rx="4" fill="rgba(255,255,255,.04)"/>
+          <!-- legs -->
+          <rect x="14" y="44" width="5" height="14" rx="2" fill="#5c4020"/>
+          <rect x="49" y="44" width="5" height="14" rx="2" fill="#5c4020"/>
+          <!-- gold accent -->
+          <rect x="10" y="36" width="48" height="16" rx="6" fill="none" stroke="rgba(212,175,55,.25)" stroke-width="1"/>
+          <rect x="14" y="8" width="40" height="30" rx="6" fill="none" stroke="rgba(212,175,55,.2)" stroke-width="1"/>
+          <!-- little star -->
+          <circle cx="34" cy="63" r="2" fill="#d4af37" opacity=".5"/>
+        </svg>
+        <div class="price-type">Standard</div>
+        <div class="price-amt" id="display-price-Standard">700<sup>DA</sup></div>
+        <div class="price-desc">Comfy pallet chair setup</div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider-ornament reveal"><span></span><i>✦</i><span></span></div>
+
+  <!-- BOOKING FORM -->
+  <section class="section reveal">
+    <div class="sec-head">
+      <h2 class="sec-title">📝 Book Your Seats</h2>
+      <span class="sec-sub">Fill in your details — ticket generated instantly</span>
+    </div>
+    <div class="booking-box">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="f-name">Full Name</label>
+          <input class="form-input" type="text" id="f-name" placeholder="Your full name" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-phone">Phone Number</label>
+          <input class="form-input" type="tel" id="f-phone" placeholder="0555 ···" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-seats">Number of Seats</label>
+          <select class="form-select" id="f-seats" onchange="calcTotal()">
+            <option value="">— Select —</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Seat Type</label>
+          <div style="font-size:.8rem;color:var(--muted);padding:14px 0 0;">Select above ↑</div>
+          <div style="font-size:.88rem;color:var(--gold);font-weight:600" id="selected-type-display">— Not selected —</div>
+        </div>
+        <div class="form-group form-full">
+          <div class="total-bar">
+            <span class="total-lbl">Total to Pay</span>
+            <span class="total-amt" id="total-preview">0 DA</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn-book" onclick="submitForm()">🎫 Generate My Ticket</button>
+    </div>
+  </section>
+
+</main>
+<footer class="site-footer"><span id="footer-copy">© CaLMoviE · Outdoor Cinema · All Rights Reserved</span></footer>
+</div>
+
+<!-- ═══ TICKET MODAL ═══ -->
+<div class="modal" id="ticket-modal">
+  <div class="modal-inner">
+    <div id="ticket">
+      <div class="tk-header">
+        <div class="tk-brand" id="tk-brand">CaLMoviE</div>
+        <span class="tk-sub">✦ Official Entry Pass ✦</span>
+      </div>
+      <div class="tk-code-banner">
+        <span class="tk-code-label">Ticket Code</span>
+        <span class="tk-code-val" id="tk-code">CIN-0000-AA</span>
+      </div>
+      <div class="tk-body">
+        <div class="tk-details">
+          <div class="tk-movie" id="tk-movie"></div>
+          <div class="tk-row"><span class="tk-l">Guest</span>  <span class="tk-v"      id="tk-name"></span></div>
+          <div class="tk-row"><span class="tk-l">Phone</span>  <span class="tk-v"      id="tk-phone"></span></div>
+          <div class="tk-row"><span class="tk-l">Day</span>    <span class="tk-v"      id="tk-day"></span></div>
+          <div class="tk-row"><span class="tk-l">Date</span>   <span class="tk-v"      id="tk-date"></span></div>
+          <div class="tk-row"><span class="tk-l">Time</span>   <span class="tk-v"      id="tk-time"></span></div>
+          <div class="tk-row"><span class="tk-l">Seats</span>  <span class="tk-v"      id="tk-seats"></span></div>
+          <div class="tk-row"><span class="tk-l">Type</span>   <span class="tk-v"      id="tk-type"></span></div>
+          <div class="tk-row"><span class="tk-l">Total</span>  <span class="tk-v gold" id="tk-total"></span></div>
+        </div>
+        <div class="tk-qr-wrap">
+          <canvas id="qr-canvas" width="100" height="100"></canvas>
+          <span class="tk-scan-lbl">Scan at<br>entrance</span>
+        </div>
+      </div>
+      <div class="tk-perf"><div class="tk-notch"></div><div class="tk-dots"></div><div class="tk-notch"></div></div>
+      <div class="tk-footer">
+        <div class="tk-id"><strong>Booking ID</strong><span id="tk-id"></span></div>
+        <span class="tk-film-ico">🎬</span>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-dl" onclick="downloadTicket()">📥 Download Ticket</button>
+      <button class="btn-cls" onclick="closeModal('ticket-modal')">✕ Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN PANEL ═══ -->
+<div class="modal" id="admin-modal">
+  <div class="modal-inner" style="max-width:700px">
+    <div class="admin-panel" style="width:100%">
+      <div class="admin-header">
+        <div class="admin-title">⚙️ Admin Panel</div>
+        <button class="admin-close" onclick="closeModal('admin-modal')">✕</button>
+      </div>
+      <div class="admin-body">
+
+        <!-- SITE -->
+        <div class="admin-section">
+          <div class="admin-section-title">🏷️ Site Identity</div>
+          <div class="admin-grid">
+            <div class="admin-group"><label class="admin-label">Site Name</label><input class="admin-input" id="a-sitename" value="CaLMoviE"></div>
+            <div class="admin-group"><label class="admin-label">Tagline</label><input class="admin-input" id="a-tagline" value="Outdoor Cinema Experience"></div>
+          </div>
+        </div>
+
+        <!-- DAY 1 -->
+        <div class="admin-section">
+          <div class="admin-section-title">📅 Day 1 (Monday)</div>
+          <div class="admin-grid">
+            <div class="admin-group"><label class="admin-label">Day Label</label><input class="admin-input" id="a-d0-name" value="Monday"></div>
+            <div class="admin-group"><label class="admin-label">Short Date</label><input class="admin-input" id="a-d0-date" value="April 7 · 2026"></div>
+            <div class="admin-group"><label class="admin-label">Movie Name</label><input class="admin-input" id="a-d0-movie" value="Interstellar"></div>
+            <div class="admin-group"><label class="admin-label">Showtime</label><input class="admin-input" id="a-d0-time" value="21:00"></div>
+            <div class="admin-group"><label class="admin-label">Total Seats</label><input class="admin-input" type="number" id="a-d0-seats" value="60" min="1"></div>
+            <div class="admin-group"><label class="admin-label">Venue</label><input class="admin-input" id="a-d0-venue" value="Open Sky · Outdoor Stage"></div>
+          </div>
+          <div class="admin-grid col1" style="margin-top:8px">
+            <div class="admin-group"><label class="admin-label">Poster URL</label><input class="admin-input" id="a-d0-poster" value="https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg"><span class="admin-note">Paste any direct .jpg/.png image URL</span></div>
+          </div>
+        </div>
+
+        <!-- DAY 2 -->
+        <div class="admin-section">
+          <div class="admin-section-title">📅 Day 2 (Tuesday)</div>
+          <div class="admin-grid">
+            <div class="admin-group"><label class="admin-label">Day Label</label><input class="admin-input" id="a-d1-name" value="Tuesday"></div>
+            <div class="admin-group"><label class="admin-label">Short Date</label><input class="admin-input" id="a-d1-date" value="April 8 · 2026"></div>
+            <div class="admin-group"><label class="admin-label">Movie Name</label><input class="admin-input" id="a-d1-movie" value="Dune: Part Two"></div>
+            <div class="admin-group"><label class="admin-label">Showtime</label><input class="admin-input" id="a-d1-time" value="21:00"></div>
+            <div class="admin-group"><label class="admin-label">Total Seats</label><input class="admin-input" type="number" id="a-d1-seats" value="60" min="1"></div>
+            <div class="admin-group"><label class="admin-label">Venue</label><input class="admin-input" id="a-d1-venue" value="Open Sky · Outdoor Stage"></div>
+          </div>
+          <div class="admin-grid col1" style="margin-top:8px">
+            <div class="admin-group"><label class="admin-label">Poster URL</label><input class="admin-input" id="a-d1-poster" value="https://upload.wikimedia.org/wikipedia/en/b/bc/Dune_Part_Two_film_poster.jpg"><span class="admin-note">Paste any direct .jpg/.png image URL</span></div>
+          </div>
+        </div>
+
+        <!-- MAX BOOKING -->
+        <div class="admin-section">
+          <div class="admin-section-title">🎟️ Booking Settings</div>
+          <div class="admin-grid">
+            <div class="admin-group"><label class="admin-label">Max Seats per Booking</label><input class="admin-input" type="number" id="a-maxbook" value="6" min="1" max="20"></div>
+          </div>
+        </div>
+
+        <!-- TICKET PRICES -->
+        <div class="admin-section">
+          <div class="admin-section-title">💰 Ticket Prices (DA)</div>
+          <div class="admin-grid">
+            <div class="admin-group"><label class="admin-label">🛋️ Pouf Price</label><input class="admin-input" type="number" id="a-price-pouf" value="1000" min="0"></div>
+            <div class="admin-group"><label class="admin-label">🪑 Standard Price</label><input class="admin-input" type="number" id="a-price-standard" value="700" min="0"></div>
+          </div>
+        </div>
+
+        <!-- SNACK MENU -->
+        <div class="admin-section">
+          <div class="admin-section-title">🍿 Snack Menu</div>
+          <div class="snack-row-header">
+            <span>Item Name</span><span>Price (DA)</span><span>Del</span>
+          </div>
+          <div id="admin-snack-rows"></div>
+          <button class="btn-add-snack" onclick="addSnackRow()">+ Add Item</button>
+        </div>
+
+        <!-- SCANNER -->
+        <div class="admin-section">
+          <div class="admin-section-title">📷 QR Scanner</div>
+          <p style="font-size:.76rem;color:var(--muted);margin-bottom:var(--sp-sm)">Scan guest tickets at the entrance using your device camera.</p>
+          <button class="btn-apply" style="background:linear-gradient(135deg,#1a6090,#0d3a5a)" onclick="closeModal('admin-modal');openScanner()">📷 Open QR Scanner</button>
+        </div>
+
+        <button class="btn-apply" onclick="applyAdmin()">✅ Apply All Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCANNER MODAL ═══ -->
+<div class="modal" id="scanner-modal">
+  <div class="modal-inner" style="max-width:500px">
+    <div class="scanner-panel" style="width:100%">
+      <div class="scanner-header">
+        <div class="scanner-title">📷 QR Ticket Scanner</div>
+        <button class="admin-close" onclick="stopScanner();closeModal('scanner-modal')">✕</button>
+      </div>
+      <div class="scanner-body">
+        <div class="scanner-video-wrap">
+          <video id="scanner-video" autoplay muted playsinline></video>
+          <div class="scanner-overlay"><div class="scanner-frame"><div class="scan-line"></div></div></div>
+        </div>
+        <div class="scanner-status" id="scanner-status">Press Start to activate camera</div>
+        <div class="scanner-result" id="scanner-result">
+          <div class="scanner-result-title">✅ Ticket Verified</div>
+          <div class="scanner-result-data" id="scanner-data"></div>
+        </div>
+        <div class="scanner-btns">
+          <button class="btn-scan-start" onclick="startScanner()">▶ Start Camera</button>
+          <button class="btn-scan-stop" onclick="stopScanner()">■ Stop</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   STATE
+═══════════════════════════════════════ */
+var CFG = {
+  site:{ name:"CaLMoviE", tagline:"Outdoor Cinema Experience" },
+  days:[
+    { name:"Monday",  date:"April 7 · 2026",  movie:"Interstellar",  time:"21:00", venue:"Open Sky · Outdoor Stage", poster:"https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg",  total:60 },
+    { name:"Tuesday", date:"April 8 · 2026",  movie:"Dune: Part Two",time:"21:00", venue:"Open Sky · Outdoor Stage", poster:"https://upload.wikimedia.org/wikipedia/en/b/bc/Dune_Part_Two_film_poster.jpg", total:60 }
+  ],
+  seats:{ maxPerBooking:6, showCounter:false },
+  prices:{ Pouf:1000, Standard:700 },
+  snacks:[
+    {emoji:"🍿",name:"Popcorn",price:400},
+    {emoji:"🥤",name:"Soda",   price:300},
+    {emoji:"💧",name:"Water",  price:150},
+    {emoji:"🍬",name:"Candy",  price:200},
+    {emoji:"🍫",name:"Sweets", price:250}
+  ]
+};
+
+// Runtime seat availability per day (separate from CFG so resets on refresh)
+var seatsLeft = [CFG.days[0].total, CFG.days[1].total];
+var selectedDay  = 0;
+var selectedType = '';
+var ticketCounter = 1000; // increment for unique codes
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+(function init(){
+  renderAll();
+  buildSeatDropdown();
+  renderSnackGrid();
+
+  var obs=new IntersectionObserver(function(e){ e.forEach(function(x){ if(x.isIntersecting) x.target.classList.add('vis'); }); },{threshold:.08});
+  document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+  document.querySelectorAll('.modal').forEach(function(m){
+    m.addEventListener('click',function(e){ if(e.target===this){ stopScanner(); closeModal(this.id); } });
+  });
+})();
+
+/* ═══════════════════════════════════════
+   SAFE getElementById HELPER
+═══════════════════════════════════════ */
+function $id(id){ return document.getElementById(id); }
+function setText(id,val){ var el=$id(id); if(el) el.textContent=val; }
+function setHTML(id,val){ var el=$id(id); if(el) el.innerHTML=val; }
+function setSrc(id,val){ var el=$id(id); if(el) el.src=val; }
+function setStyle(id,prop,val){ var el=$id(id); if(el) el.style[prop]=val; }
+
+/* ═══════════════════════════════════════
+   RENDER ALL DOM FROM CFG
+═══════════════════════════════════════ */
+function renderAll(){
+  var s=CFG.site;
+  document.title = s.name+' — Outdoor Cinema';
+  setText('site-name',    s.name);
+  setText('tk-brand',     s.name);
+  setText('site-tagline', s.tagline);
+  setText('footer-copy',  '© '+s.name+' · Outdoor Cinema · All Rights Reserved');
+
+  // Day cards
+  CFG.days.forEach(function(d,i){
+    setText('day-name-'+i,  d.name);
+    setText('day-date-'+i,  d.date);
+    setText('day-movie-'+i, d.movie);
+    setText('day-seats-'+i, seatsLeft[i]);
+  });
+
+  // Prices
+  setHTML('display-price-Pouf',     CFG.prices.Pouf.toLocaleString()+'<sup>DA</sup>');
+  setHTML('display-price-Standard', CFG.prices.Standard.toLocaleString()+'<sup>DA</sup>');
+
+  // Refresh current day view
+  refreshDayView();
+  buildSeatDropdown();
+}
+
+function refreshDayView(){
+  var d=CFG.days[selectedDay];
+  setText('screening-day-label', d.name+' · '+d.date);
+  setText('movie-badge',         (selectedDay===0?'🔴 ':'📅 ')+d.name);
+  setSrc('movie-poster',          d.poster);
+  setText('movie-name-display',   d.movie);
+  setText('meta-date',            d.name+', '+d.date);
+  setText('meta-time',            d.time);
+  setText('meta-venue',           d.venue);
+  // Only call calcTotal if form elements exist
+  if($id('f-seats') && $id('total-preview')) calcTotal();
+}
+
+/* ═══════════════════════════════════════
+   DAY SELECTION
+═══════════════════════════════════════ */
+function selectDay(idx){
+  selectedDay=idx;
+  var c0=$id('day-card-0'), c1=$id('day-card-1');
+  if(c0) c0.classList.toggle('active', idx===0);
+  if(c1) c1.classList.toggle('active', idx===1);
+  refreshDayView();
+}
+
+/* ═══════════════════════════════════════
+   SEAT TYPE SELECTION
+═══════════════════════════════════════ */
+function selectSeatType(type){
+  selectedType=type;
+  var cp=$id('card-Pouf'), cs=$id('card-Standard');
+  if(cp) cp.classList.toggle('selected', type==='Pouf');
+  if(cs) cs.classList.toggle('selected', type==='Standard');
+  setText('selected-type-display', type==='Pouf'?'🛋️ Pouf':'🪑 Standard');
+  calcTotal();
+}
+
+/* ═══════════════════════════════════════
+   SNACK GRID
+═══════════════════════════════════════ */
+function renderSnackGrid(){
+  var g=$id('snack-grid');
+  if(!g) return;
+  g.innerHTML='';
+  CFG.snacks.forEach(function(s){
+    g.innerHTML+='<div class="snack-card"><span class="snack-emoji">'+s.emoji+'</span><div class="snack-name">'+s.name+'</div><div class="snack-price">'+s.price.toLocaleString()+' DA</div></div>';
+  });
+}
+
+/* ═══════════════════════════════════════
+   SEAT DROPDOWN
+═══════════════════════════════════════ */
+function buildSeatDropdown(){
+  var sel=$id('f-seats');
+  if(!sel) return;
+  sel.innerHTML='<option value="">— Select —</option>';
+  for(var i=1;i<=CFG.seats.maxPerBooking;i++){
+    var o=document.createElement('option'); o.value=i; o.textContent=i+(i===1?' seat':' seats'); sel.appendChild(o);
+  }
+}
+
+/* ═══════════════════════════════════════
+   TOTAL CALC
+═══════════════════════════════════════ */
+function calcTotal(){
+  var selEl=$id('f-seats'), prevEl=$id('total-preview');
+  if(!selEl||!prevEl) return;
+  var n=parseInt(selEl.value)||0;
+  var total=n*(selectedType?(CFG.prices[selectedType]||0):0);
+  prevEl.textContent=total>0?total.toLocaleString()+' DA':'0 DA';
+}
+
+/* ═══════════════════════════════════════
+   UNIQUE TICKET CODE  e.g. CM-4821-A7
+═══════════════════════════════════════ */
+function genCode(){
+  ticketCounter++;
+  var num=ticketCounter;
+  var alpha='ABCDEFGHJKLMNPQRSTUVWXYZ';
+  var suffix=alpha[Math.floor(Math.random()*alpha.length)]+Math.floor(Math.random()*10);
+  return 'CM-'+num+'-'+suffix;
+}
+function genID(){
+  var c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',id='';
+  for(var i=0;i<6;i++) id+=c[Math.floor(Math.random()*c.length)];
+  return id;
+}
+
+/* ═══════════════════════════════════════
+   SUBMIT FORM → GENERATE TICKET
+═══════════════════════════════════════ */
+function submitForm(){
+  var nameEl=$id('f-name'), phoneEl=$id('f-phone'), seatsEl=$id('f-seats');
+  if(!nameEl||!phoneEl||!seatsEl) return;
+  var name  = nameEl.value.trim();
+  var phone = phoneEl.value.trim();
+  var seats = seatsEl.value;
+  if(!name)         { alert('⚠️ Please enter your full name.');    return; }
+  if(!phone)        { alert('⚠️ Please enter your phone number.'); return; }
+  if(!seats)        { alert('⚠️ Please select number of seats.');  return; }
+  if(!selectedType) { alert('⚠️ Please select a seat type (Pouf or Standard).'); return; }
+
+  var n=parseInt(seats);
+  if(n>seatsLeft[selectedDay]){ alert('⚠️ Only '+seatsLeft[selectedDay]+' seat(s) remaining for '+CFG.days[selectedDay].name+'!'); return; }
+
+  var d=CFG.days[selectedDay];
+  var total=n*(CFG.prices[selectedType]||0);
+  var code=genCode();
+  var bid=genID();
+  var qrData='CaLMoviE|'+code+'|'+bid+'|'+name+'|'+phone+'|'+d.movie+'|'+d.name+' '+d.date+'|'+d.time+'|'+n+'x'+selectedType+'|'+total+'DA';
+
+  // Fill ticket safely
+  setText('tk-code',  code);
+  setText('tk-movie', d.movie);
+  setText('tk-name',  name);
+  setText('tk-phone', phone);
+  setText('tk-day',   d.name);
+  setText('tk-date',  d.date);
+  setText('tk-time',  d.time);
+  setText('tk-seats', n+(n===1?' seat':' seats'));
+  setText('tk-type',  selectedType);
+  setText('tk-total', total.toLocaleString()+' DA');
+  setText('tk-id',    bid);
+
+  // QR
+  var qrCanvas=$id('qr-canvas');
+  if(qrCanvas) drawQR(qrCanvas, qrData);
+
+  openModal('ticket-modal');
+}
+
+/* ═══════════════════════════════════════
+   DOWNLOAD TICKET (canvas render)
+═══════════════════════════════════════ */
+function downloadTicket(){
+  var tk=$id('ticket');
+  if(!tk) return;
+  var W=tk.offsetWidth||560, H=tk.offsetHeight||420, scale=3;
+  var c=document.createElement('canvas');
+  c.width=W*scale; c.height=H*scale;
+  var ctx=c.getContext('2d');
+  ctx.scale(scale,scale);
+  // BG
+  var bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#0c0f2d'); bg.addColorStop(.48,'#1c0909'); bg.addColorStop(1,'#09102a');
+  ctx.fillStyle=bg;
+  ctx.beginPath();
+  if(ctx.roundRect) ctx.roundRect(0,0,W,H,22); else ctx.rect(0,0,W,H);
+  ctx.fill();
+  // Header
+  var hg=ctx.createLinearGradient(0,0,W,80); hg.addColorStop(0,'#8b1a1a'); hg.addColorStop(1,'#1a2560');
+  ctx.fillStyle=hg; ctx.fillRect(0,0,W,82);
+  var siteName=($id('site-name')||{textContent:'CaLMoviE'}).textContent;
+  ctx.fillStyle='#d4af37'; ctx.font='bold 20px serif'; ctx.textAlign='center'; ctx.fillText(siteName,W/2,46);
+  ctx.fillStyle='rgba(255,255,255,.5)'; ctx.font='9px serif'; ctx.fillText('✦ Official Entry Pass ✦',W/2,62);
+  // Code banner
+  ctx.fillStyle='rgba(212,175,55,.1)'; ctx.fillRect(0,82,W,28);
+  ctx.fillStyle='rgba(212,175,55,.4)'; ctx.font='8px monospace'; ctx.textAlign='left'; ctx.fillText('TICKET CODE',18,95);
+  ctx.fillStyle='#d4af37'; ctx.font='bold 14px monospace'; ctx.textAlign='right';
+  ctx.fillText(($id('tk-code')||{textContent:''}).textContent,W-18,96);
+  // Rows
+  var rows=[
+    ['Movie',  ($id('tk-movie')||{textContent:''}).textContent],
+    ['Guest',  ($id('tk-name')||{textContent:''}).textContent],
+    ['Phone',  ($id('tk-phone')||{textContent:''}).textContent],
+    ['Day',    ($id('tk-day')||{textContent:''}).textContent],
+    ['Date',   ($id('tk-date')||{textContent:''}).textContent],
+    ['Time',   ($id('tk-time')||{textContent:''}).textContent],
+    ['Seats',  ($id('tk-seats')||{textContent:''}).textContent],
+    ['Type',   ($id('tk-type')||{textContent:''}).textContent],
+    ['Total',  ($id('tk-total')||{textContent:''}).textContent]
+  ];
+  var y=132;
+  rows.forEach(function(r){
+    ctx.fillStyle='#6a7d9e'; ctx.font='8px sans-serif'; ctx.textAlign='left'; ctx.fillText(r[0].toUpperCase(),18,y);
+    ctx.fillStyle=r[0]==='Total'?'#d4af37':'#eef0f8';
+    ctx.font=r[0]==='Total'?'bold 12px sans-serif':'11px sans-serif';
+    ctx.textAlign='right'; ctx.fillText(r[1],W-118,y);
+    ctx.textAlign='left'; y+=22;
+    ctx.strokeStyle='rgba(255,255,255,.04)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(18,y-10); ctx.lineTo(W-18,y-10); ctx.stroke();
+  });
+  // QR
+  var qrC=$id('qr-canvas');
+  if(qrC) ctx.drawImage(qrC,W-112,108,90,90);
+  ctx.fillStyle='rgba(255,255,255,.35)'; ctx.font='7px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Scan at entrance',W-67,206);
+  // Footer
+  var bid=($id('tk-id')||{textContent:''}).textContent;
+  var code=($id('tk-code')||{textContent:'ticket'}).textContent;
+  ctx.textAlign='left'; ctx.fillStyle='rgba(212,175,55,.5)'; ctx.font='bold 8px monospace';
+  ctx.fillText('BOOKING ID',18,H-22);
+  ctx.fillStyle='#6a7d9e'; ctx.font='9px monospace'; ctx.fillText(bid,18,H-8);
+  var a=document.createElement('a');
+  a.download=siteName+'-'+code+'.png';
+  a.href=c.toDataURL('image/png'); a.click();
+}
+
+/* ═══════════════════════════════════════
+   ADMIN PANEL
+═══════════════════════════════════════ */
+function getVal(id,fallback){ var el=$id(id); return el?el.value:(fallback||''); }
+function setVal(id,val){ var el=$id(id); if(el) el.value=val; }
+function getChecked(id){ var el=$id(id); return el?el.checked:false; }
+function setChecked(id,val){ var el=$id(id); if(el) el.checked=val; }
+
+function openAdmin(){
+  var s=CFG.site, d0=CFG.days[0], d1=CFG.days[1];
+  setVal('a-sitename', s.name);
+  setVal('a-tagline',  s.tagline);
+  setVal('a-d0-name',   d0.name);  setVal('a-d0-date',  d0.date);
+  setVal('a-d0-movie',  d0.movie); setVal('a-d0-time',  d0.time);
+  setVal('a-d0-seats',  d0.total); setVal('a-d0-venue', d0.venue);
+  setVal('a-d0-poster', d0.poster);
+  setVal('a-d1-name',   d1.name);  setVal('a-d1-date',  d1.date);
+  setVal('a-d1-movie',  d1.movie); setVal('a-d1-time',  d1.time);
+  setVal('a-d1-seats',  d1.total); setVal('a-d1-venue', d1.venue);
+  setVal('a-d1-poster', d1.poster);
+  setVal('a-maxbook',        CFG.seats.maxPerBooking);
+  setVal('a-price-pouf',     CFG.prices.Pouf);
+  setVal('a-price-standard', CFG.prices.Standard);
+  renderAdminSnacks();
+  openModal('admin-modal');
+}
+
+function renderAdminSnacks(){
+  var cont=$id('admin-snack-rows');
+  if(!cont) return;
+  cont.innerHTML='';
+  CFG.snacks.forEach(function(s,i){
+    cont.innerHTML+='<div class="snack-row" id="snack-row-'+i+'">'+
+      '<input class="admin-input" placeholder="e.g. 🍕 Pizza" value="'+s.emoji+' '+s.name+'" id="snack-nm-'+i+'">'+
+      '<input class="admin-input" type="number" placeholder="Price" value="'+s.price+'" id="snack-pr-'+i+'" min="0">'+
+      '<button class="btn-remove-snack" onclick="removeSnack('+i+')">✕</button>'+
+      '</div>';
+  });
+}
+
+function addSnackRow(){
+  CFG.snacks.push({emoji:'🆕',name:'New Item',price:0});
+  renderAdminSnacks();
+}
+
+function removeSnack(i){
+  CFG.snacks.splice(i,1);
+  renderAdminSnacks();
+}
+
+function applyAdmin(){
+  CFG.site.name    = getVal('a-sitename')||'CaLMoviE';
+  CFG.site.tagline = getVal('a-tagline');
+  [0,1].forEach(function(i){
+    var pfx='a-d'+i+'-';
+    CFG.days[i].name   = getVal(pfx+'name');
+    CFG.days[i].date   = getVal(pfx+'date');
+    CFG.days[i].movie  = getVal(pfx+'movie');
+    CFG.days[i].time   = getVal(pfx+'time');
+    CFG.days[i].venue  = getVal(pfx+'venue');
+    CFG.days[i].poster = getVal(pfx+'poster');
+    var newTotal=parseInt(getVal(pfx+'seats'))||60;
+    if(newTotal!==CFG.days[i].total){ CFG.days[i].total=newTotal; seatsLeft[i]=newTotal; }
+  });
+  CFG.seats.maxPerBooking = parseInt(getVal('a-maxbook'))||6;
+  CFG.prices.Pouf     = parseInt(getVal('a-price-pouf'))||0;
+  CFG.prices.Standard = parseInt(getVal('a-price-standard'))||0;
+  // Read snacks
+  var rows=document.querySelectorAll('#admin-snack-rows .snack-row');
+  CFG.snacks=[];
+  rows.forEach(function(row,i){
+    var rawName=getVal('snack-nm-'+i);
+    var price=parseInt(getVal('snack-pr-'+i))||0;
+    var m=rawName.match(/^(\S+)\s+(.*)/);
+    CFG.snacks.push({emoji:m?m[1]:'🍽️', name:m?m[2]:rawName, price:price});
+  });
+  renderAll();
+  renderSnackGrid();
+  closeModal('admin-modal');
+  var btn=document.querySelector('.admin-btn');
+  if(btn){ var orig=btn.innerHTML; btn.innerHTML='✅ Applied!'; btn.style.color='#4caf50'; setTimeout(function(){ btn.innerHTML=orig; btn.style.color=''; },2200); }
+}
+
+/* ═══════════════════════════════════════
+   MODAL HELPERS
+═══════════════════════════════════════ */
+function openModal(id){ document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+
+/* ═══════════════════════════════════════
+   QR SCANNER
+═══════════════════════════════════════ */
+var scannerStream=null,scannerTimer=null,jsQRLoaded=false;
+function openScanner(){ openModal('scanner-modal'); }
+function startScanner(){
+  document.getElementById('scanner-status').textContent='Requesting camera…';
+  document.getElementById('scanner-result').classList.remove('show');
+  if(!jsQRLoaded){
+    var s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js';
+    s.onload=function(){ jsQRLoaded=true; startCamera(); };
+    s.onerror=function(){ document.getElementById('scanner-status').textContent='⚠️ Could not load scanner library.'; };
+    document.head.appendChild(s);
+  } else { startCamera(); }
+}
+function startCamera(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ document.getElementById('scanner-status').textContent='⚠️ Camera not supported.'; return; }
+  navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}}).then(function(stream){
+    scannerStream=stream;
+    var vid=document.getElementById('scanner-video'); vid.srcObject=stream; vid.play();
+    document.getElementById('scanner-status').textContent='🔍 Scanning… hold QR up to camera';
+    scannerTimer=setInterval(function(){ scanFrame(vid); },300);
+  }).catch(function(err){ document.getElementById('scanner-status').textContent='⚠️ Camera denied: '+err.message; });
+}
+function scanFrame(video){
+  if(video.readyState!==video.HAVE_ENOUGH_DATA) return;
+  if(typeof jsQR==='undefined') return;
+  var c=document.createElement('canvas'); c.width=video.videoWidth; c.height=video.videoHeight;
+  var ctx=c.getContext('2d'); ctx.drawImage(video,0,0);
+  var img=ctx.getImageData(0,0,c.width,c.height);
+  var code=jsQR(img.data,img.width,img.height,{inversionAttempts:'dontInvert'});
+  if(code){
+    clearInterval(scannerTimer); stopScanner();
+    var p=code.data.split('|');
+    var fmt=p.length>=10
+      ? '🎟️ Code: '+p[1]+'\n👤 '+p[3]+'\n📞 '+p[4]+'\n🎬 '+p[5]+'\n📅 '+p[6]+'\n⏰ '+p[7]+'\n💺 '+p[8]+'\n💰 '+p[9]
+      : code.data;
+    document.getElementById('scanner-data').textContent=fmt;
+    document.getElementById('scanner-result').classList.add('show');
+    document.getElementById('scanner-status').textContent='✅ Ticket verified!';
+  }
+}
+function stopScanner(){
+  clearInterval(scannerTimer);
+  if(scannerStream){ scannerStream.getTracks().forEach(function(t){ t.stop(); }); scannerStream=null; }
+  document.getElementById('scanner-video').srcObject=null;
+  document.getElementById('scanner-status').textContent='Camera stopped.';
+}
+
+/* ═══════════════════════════════════════
+   QR CODE GENERATOR (self-contained)
+═══════════════════════════════════════ */
+function drawQR(canvas,text){
+  var g=buildQR(text), N=g.length, px=Math.floor(100/N);
+  canvas.width=canvas.height=N*px;
+  var ctx=canvas.getContext('2d');
+  ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='#07091e';
+  for(var r=0;r<N;r++) for(var c=0;c<N;c++) if(g[r][c]) ctx.fillRect(c*px,r*px,px,px);
+}
+function buildQR(text){
+  var N=25, g=[];
+  for(var r=0;r<N;r++){ g.push([]); for(var c=0;c<N;c++) g[r].push(0); }
+  function finder(row,col){
+    for(var r=0;r<7;r++) for(var c=0;c<7;c++)
+      if(row+r<N&&col+c<N) g[row+r][col+c]=(r===0||r===6||c===0||c===6)?1:(r>=2&&r<=4&&c>=2&&c<=4)?1:0;
+  }
+  finder(0,0); finder(0,18); finder(18,0);
+  for(var i=8;i<17;i++){ g[6][i]=(i%2===0)?1:0; g[i][6]=(i%2===0)?1:0; }
+  g[8][13]=1;
+  var res=[];
+  for(var r=0;r<N;r++) for(var c=0;c<N;c++) res.push((r<9&&c<9)||(r<9&&c>17)||(r>17&&c<9)||r===6||c===6?1:0);
+  var hash=0;
+  for(var i=0;i<text.length;i++) hash=((hash<<5)-hash+text.charCodeAt(i))|0;
+  var lcg=Math.abs(hash)||9999;
+  function nb(){ lcg=(lcg*1664525+1013904223)&0xffffffff; return(lcg>>>16)&1; }
+  for(var r=0;r<N;r++) for(var c=0;c<N;c++) if(!res[r*N+c]) g[r][c]=nb();
+  finder(0,0); finder(0,18); finder(18,0);
+  for(var i=8;i<17;i++){ g[6][i]=(i%2===0)?1:0; g[i][6]=(i%2===0)?1:0; }
+  g[8][13]=1;
+  return g;
+}
+</script>
+</body>
+</html>
